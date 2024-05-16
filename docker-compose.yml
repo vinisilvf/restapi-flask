@@ -1,8 +1,6 @@
-version: '3.12'
-
 services:
   mongodb:
-    image: mongo:latest
+    image: mongo:5.0.8
     container_name: mongodb
     environment:
       MONGO_INITDB_ROOT_USERNAME: admin
@@ -15,6 +13,13 @@ services:
     ports:
       - 5000:5000
     restart: always
+    environment:
+      - FLASK_ENV=development
+      - FLASK_RUN_HOST=0.0.0.0
+      - MONGODB_DB=users
+      - MONGODB_HOST=mongodb
+      - MONGODB_USERNAME=admin
+      - MONGODB_PASSWORD=admin      
     depends_on:
       - mongodb
     volumes:
