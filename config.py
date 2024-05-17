@@ -1,5 +1,6 @@
 import os
 
+
 class DevConfig():
 
     MONGODB_SETTINGS = {
