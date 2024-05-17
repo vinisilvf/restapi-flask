@@ -18,7 +18,7 @@ services:
       - FLASK_RUN_HOST=0.0.0.0
       - MONGODB_DB=users
       - MONGODB_HOST=mongodb
-      - MONGODB_USERNAME=admin
+      - MONGODB_USER=admin
       - MONGODB_PASSWORD=admin      
     depends_on:
       - mongodb
