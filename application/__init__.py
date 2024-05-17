@@ -3,9 +3,10 @@ from flask_restful import Api
 from .db import init_db
 from .app import User, Users
 
+
 def create_app(config):
     app = Flask(__name__)
-    #Iniciação do FlaskRestful
+    # Iniciação do FlaskRestful
     api = Api(app)
     app.config.from_object(config)
     init_db(app)
