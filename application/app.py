@@ -39,6 +39,11 @@ _user_parser.add_argument(
 )
 
 
+class HealthCheck(Resource):
+    def get(self):
+        return "Healthy, Comunidade DevOps", 200
+
+
 class Users(Resource):
     def get(self):
         return jsonify(UserModel.objects())
