@@ -15,7 +15,7 @@ class TestApplication:
             "last_name": "Ferreira",
             "cpf": "641.396.500-28",
             "email": "contato@vinicius.me",
-            "birth_date": "1996-09-10",
+            "birth_date": "1999-09-10",
         }
 
     @pytest.fixture
@@ -25,7 +25,7 @@ class TestApplication:
             "last_name": "Ferreira",
             "cpf": "641.396.500-27",
             "email": "contato@vinicius.me",
-            "birth_date": "1996-09-10",
+            "birth_date": "1999-09-10",
         }
 
     def test_get_users(self, client):
@@ -44,25 +44,25 @@ class TestApplication:
     def test_get_user(self, client, valid_user, invalid_user):
         response = client.get("/user/%s" % valid_user["cpf"])
         assert response.status_code == 200
-        assert response.json[0]["first_name"] == "Mateus"
-        assert response.json[0]["last_name"] == "Muller"
-        assert response.json[0]["cpf"] == "641.396.500-28"
-        assert response.json[0]["email"] == "contato@mateusmuller.me"
+        assert response.json[0]["first_name"] == "Vinicius"
+        assert response.json[0]["last_name"] == "Ferreira"
+        assert response.json[0]["cpf"] == "641.396.500-27"
+        assert response.json[0]["email"] == "contato@vinicius.me"
 
         birth_date = response.json[0]["birth_date"]["$date"]
-        assert birth_date == "1996-09-10T00:00:00Z"
+        assert birth_date == "1999-09-10T00:00:00Z"
 
         response = client.get("/user/%s" % invalid_user["cpf"])
         assert response.status_code == 400
         assert b"User does not exist in database!" in response.data
 
     def test_patch_user(self, client, valid_user):
-        valid_user["first_name"] = "Matheus"
+        valid_user["first_name"] = "Vinicius"
         response = client.patch("/user", json=valid_user)
         assert response.status_code == 200
         assert b"updated" in response.data
 
-        valid_user["cpf"] = "199.624.120-64"
+        valid_user["cpf"] = "641.396.500-27"
         response = client.patch("/user", json=valid_user)
         assert response.status_code == 400
         assert b"does not exist in database" in response.data
