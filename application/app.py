@@ -3,7 +3,7 @@ from flask import jsonify
 from flask_restful import Resource
 from flask_restful import reqparse
 from mongoengine import NotUniqueError
-from .model import UserModel
+from .model import UserModel, HealthCheckModel
 
 
 _user_parser = reqparse.RequestParser()
@@ -41,7 +41,12 @@ _user_parser.add_argument(
 
 class HealthCheck(Resource):
     def get(self):
-        return "Healthy, Comunidade DevOps", 200
+        response = HealthCheckModel.objects(status="healthcheck")
+        if response:
+            return "Healthy", 200
+        else:
+            HealthCheckModel(status="healthcheck").save()
+            return "Healthy", 200
 
 
 class Users(Resource):
@@ -108,5 +113,14 @@ class User(Resource):
         if response:
             response.update(**data)
             return {"message": "User updated!"}, 200
+        else:
+            return {"message": "User does not exist in database!"}, 400
+        
+    def delete(self, cpf):
+        response = UserModel.objects(cpf=cpf)
+
+        if response:
+            response.delete()
+            return {"message": "User deleted!"}, 200
         else:
             return {"message": "User does not exist in database!"}, 400
