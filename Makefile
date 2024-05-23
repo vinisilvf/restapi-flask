@@ -1,6 +1,7 @@
 APP = restapi
 
 test:
+	@black .
 	@flake8 . --exclude .venv
 	@pytest -v --disable-warnings
 

@@ -8,34 +8,17 @@ from .model import UserModel, HealthCheckModel
 
 _user_parser = reqparse.RequestParser()
 _user_parser.add_argument(
-    "first_name",
-    type=str,
-    required=True,
-    help="This field cannot be blank."
+    "first_name", type=str, required=True, help="This field cannot be blank."
 )
 _user_parser.add_argument(
-    "last_name",
-    type=str,
-    required=True,
-    help="This field cannot be blank."
+    "last_name", type=str, required=True, help="This field cannot be blank."
+)
+_user_parser.add_argument("cpf", type=str, required=True, help="Campo CPF não valido.")
+_user_parser.add_argument(
+    "email", type=str, required=True, help="This field cannot be blank."
 )
 _user_parser.add_argument(
-    "cpf",
-    type=str,
-    required=True,
-    help="Campo CPF não valido."
-)
-_user_parser.add_argument(
-    "email",
-    type=str,
-    required=True,
-    help="This field cannot be blank."
-)
-_user_parser.add_argument(
-    "birth_date",
-    type=str,
-    required=True,
-    help="This field cannot be blank."
+    "birth_date", type=str, required=True, help="This field cannot be blank."
 )
 
 
@@ -57,7 +40,7 @@ class Users(Resource):
 class User(Resource):
     def validate_cpf(self, cpf):
         # Verifica a formatação do CPF
-        if not re.match(r'\d{3}\.\d{3}\.\d{3}-\d{2}', cpf):
+        if not re.match(r"\d{3}\.\d{3}\.\d{3}-\d{2}", cpf):
             return False
 
         # Obtém apenas os números do CPF, ignorando pontuações
@@ -68,15 +51,13 @@ class User(Resource):
             return False
 
         # Validação do primeiro dígito verificador:
-        sum_of_products = sum(a * b for a, b in zip(numbers[0:9],
-                                                    range(10, 1, -1)))
+        sum_of_products = sum(a * b for a, b in zip(numbers[0:9], range(10, 1, -1)))
         expected_digit = (sum_of_products * 10 % 11) % 10
         if numbers[9] != expected_digit:
             return False
 
         # Validação do segundo dígito verificador:
-        sum_of_products = sum(a * b for a, b in zip(numbers[0:10],
-                                                    range(11, 1, -1)))
+        sum_of_products = sum(a * b for a, b in zip(numbers[0:10], range(11, 1, -1)))
         expected_digit = (sum_of_products * 10 % 11) % 10
         if numbers[10] != expected_digit:
             return False
@@ -115,7 +96,7 @@ class User(Resource):
             return {"message": "User updated!"}, 200
         else:
             return {"message": "User does not exist in database!"}, 400
-        
+
     def delete(self, cpf):
         response = UserModel.objects(cpf=cpf)
 

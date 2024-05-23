@@ -7,5 +7,5 @@ if os.getenv("FLASK_ENV") == "development":
 else:
     app = create_app("config.ProdConfig")
 
-if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+if __name__ == "__main__":
+    app.run(debug=True, host="0.0.0.0")
